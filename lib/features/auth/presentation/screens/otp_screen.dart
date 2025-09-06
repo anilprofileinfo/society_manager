@@ -76,7 +76,9 @@ class _OtpScreenState extends State<OtpScreen> {
             );
           }
         }
-        // Handle navigation on Authenticated if needed
+        if (state is Authenticated) {
+          Navigator.pushReplacementNamed(context, '/dashboard', arguments: {'userRole': state.role});
+        }
       },
       builder: (context, state) {
         return Scaffold(

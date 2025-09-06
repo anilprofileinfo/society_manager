@@ -47,20 +47,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is OTPRequestedState) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => OtpScreen(
-                verificationId: state.verificationId,
-                phone: _phoneController.text.trim(),
-                name: _nameController.text.trim(),
-                apartmentName: _apartmentController.text.trim(),
-                flatNumber: _flatController.text.trim(),
-                societyCode: _societyCodeController.text.trim(),
-                isRegistration: true,
-              ),
-            ),
-          );
+          Navigator.pushNamed(context, '/otp', arguments: {
+            'verificationId': state.verificationId,
+            'phone': _phoneController.text.trim(),
+            'name': _nameController.text.trim(),
+            'apartmentName': _apartmentController.text.trim(),
+            'flatNumber': _flatController.text.trim(),
+            'societyCode': _societyCodeController.text.trim(),
+            'isRegistration': true,
+          });
+        } else if (state is Authenticated) {
+          Navigator.pushReplacementNamed(context, '/dashboard', arguments: {'userRole': state.role});
         }
       },
       child: Scaffold(

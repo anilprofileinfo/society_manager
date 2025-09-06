@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _onRegister() {
-    // Navigate to RegisterScreen (to be implemented)
+    Navigator.pushNamed(context, '/register');
   }
 
   @override
@@ -42,16 +42,13 @@ class _LoginScreenState extends State<LoginScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is OTPRequestedState) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => OtpScreen(
-                verificationId: state.verificationId,
-                phone: _phoneController.text.trim(),
-                isRegistration: false,
-              ),
-            ),
-          );
+          Navigator.pushNamed(context, '/otp', arguments: {
+            'verificationId': state.verificationId,
+            'phone': _phoneController.text.trim(),
+            'isRegistration': false,
+          });
+        } else if (state is Authenticated) {
+          Navigator.pushReplacementNamed(context, '/dashboard', arguments: {'userRole': state.role});
         }
       },
       child: Scaffold(
